@@ -8,3 +8,5 @@ nose
 six
 django-extensions
 crispy-forms-foundation
+django-nose==1.4.1
+coverage==4.0
