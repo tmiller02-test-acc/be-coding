@@ -51,9 +51,10 @@ class TicketForm(BaseTrackerForm):
     def __init__(self, project=None, *args, **kwargs):
         self.project = project
         super(TicketForm, self).__init__(*args, **kwargs)
-
-
         self.fields['assignees'].queryset = get_user_model().objects.all()
+        self.fields['assignees'].label_from_instance =\
+            lambda assignee: "%s" % assignee.email
+
     def pre_save(self, instance):
         instance.created_by = self.user
         instance.project = self.project
