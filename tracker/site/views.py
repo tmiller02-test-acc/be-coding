@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.db.models import Count
 
 from .forms import ProjectForm, TicketForm
 from .models import Project, Ticket
@@ -31,6 +32,8 @@ class MyTicketsView(TemplateView):
                 Ticket.objects
                 .filter(assignees=self.request.user.pk)
                 .order_by('-modified')
+            ).prefetch_related(
+                'project'
             )
         else:
             tickets = []
@@ -46,6 +49,10 @@ my_tickets_view = MyTicketsView.as_view()
 class ProjectListView(ListView):
     model = Project
     template_name = "site/project_list.html"
+
+    def get_queryset(self):
+        qs = super(ProjectListView, self).get_queryset()
+        return qs.prefetch_related('tickets')
 
 
 project_list_view = ProjectListView.as_view()
