@@ -54,3 +54,44 @@ class TicketsViewTest(WebTest):
                     }),
                 user=self.user
             )
+
+
+class ProjectDetailViewTest(WebTest):
+
+    csrf_checks = False
+
+    def setUp(self):
+        self.project = Project.objects.create(title="Project")
+        self.user = get_user_model().objects.create_user(
+            'user', 'user@example.com', 'password')
+
+    def test_notify_no_tickets(self):
+        response = self.app.get(
+            reverse(
+                'project-detail',
+                kwargs={
+                    'project_id': self.project.id,
+                }),
+            user=self.user
+        )
+        self.assertContains(
+            response, 'No tickets have been created for this project')
+
+    def test_notify_no_assignees(self):
+        Ticket.objects.create(
+            title="Ticket",
+            project=self.project,
+        )
+
+        response = self.app.get(
+            reverse(
+                'project-detail',
+                kwargs={
+                    'project_id': self.project.id,
+                }),
+            user=self.user
+        )
+        self.assertNotContains(
+            response, 'No tickets have been created for this project')
+        self.assertContains(
+            response, 'No assigned users')
