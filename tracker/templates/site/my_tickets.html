@@ -1,29 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-	<div class="large-12 columns">
-		<div class="row">
-			<div class="row">
-			{% for ticket in tickets %}
-				<div class="large-3 medium-6 small-12 columns{% if forloop.last %} end{% endif %}">
-					<div class="panel">
-						<h5><a href="{% url "ticket-update" project_id=ticket.project_id ticket_id=ticket.pk %}">{{ ticket.project.title }}: {{ ticket.title }}</a></h5>
-						<hr>
-						<p>{{ ticket.description }}</p>
-						<small>Last updated: {{ ticket.modified }}</small>
-					</div>
+	<ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+		{% for ticket in tickets %}
+			<li>
+				<div class="panel">
+					<h5><a href="{% url "ticket-update" project_id=ticket.project_id ticket_id=ticket.pk %}">{{ ticket.project.title|truncatechars:50 }}: {{ ticket.title|truncatechars:100 }}</a></h5>
+					<hr>
+					<p>{{ ticket.description|truncatechars:200 }}</p>
+					<small>Last updated: {{ ticket.modified }}</small>
 				</div>
-			{% empty %}
+			</li>
+		{% empty %}
+			<li>
 				<div class="panel callout">
-				<h4>You are not assigned to any tickets</h4>
-				<p>
-					Either select a project from the top bar or <a href="{% url "project-create" %}">create a new project</a>.
-				</p>
+					<h4>You are not assigned to any tickets</h4>
+					<p>
+						Either select a project from the top bar or <a href="{% url "project-create" %}">create a new project</a>.
+					</p>
 				</div>
-			{% endfor %}
-			</div>
-		</div>
-	</div>
-</div>
+			</li>
+		{% endfor %}
+	</ul>
 {% endblock %}
