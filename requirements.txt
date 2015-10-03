@@ -10,3 +10,4 @@ django-extensions
 crispy-forms-foundation
 django-nose==1.4.1
 coverage==4.0
+django-webtest==1.7.8

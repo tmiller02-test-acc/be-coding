@@ -129,12 +129,15 @@ class UpdateTicketView(ProjectContextMixin, UpdateView):
     pk_url_kwarg = 'ticket_id'
     template_name = "site/ticket_form.html"
 
+    def get_queryset(self):
+        return self.get_project().tickets.all()
+
     def get_success_url(self):
         return reverse("project-detail", kwargs={"project_id": self.kwargs['project_id']})
 
     def get_form_kwargs(self):
         kwargs = super(UpdateTicketView, self).get_form_kwargs()
-        kwargs['project'] = self.project
+        kwargs['project'] = self.get_project()
         kwargs['user'] = self.request.user
         kwargs['title'] = "Edit {0}".format(self.object.title)
         return kwargs
