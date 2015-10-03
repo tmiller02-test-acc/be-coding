@@ -95,3 +95,28 @@ class ProjectDetailViewTest(WebTest):
             response, 'No tickets have been created for this project')
         self.assertContains(
             response, 'No assigned users')
+
+
+class ProjectListViewTest(WebTest):
+
+    csrf_checks = False
+
+    def setUp(self):
+        self.project = Project.objects.create(title="Project")
+        self.user = get_user_model().objects.create_user(
+            'user', 'user@example.com', 'password')
+        self.ticket_one = Ticket.objects.create(
+            title="Ticket One",
+            project=self.project,
+        )
+        self.ticket_two = Ticket.objects.create(
+            title="Ticket Two",
+            project=self.project,
+        )
+
+    def test_ticket_count(self):
+        response = self.app.get(reverse('project-list'), user=self.user)
+        self.assertIn(
+            '2',
+            str(response.html.table.find('td', {'class': 'ticket-count'})),
+        )

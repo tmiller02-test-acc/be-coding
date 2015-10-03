@@ -51,8 +51,22 @@ class ProjectListView(ListView):
     template_name = "site/project_list.html"
 
     def get_queryset(self):
-        qs = super(ProjectListView, self).get_queryset()
-        return qs.prefetch_related('tickets')
+        qs = super(ProjectListView, self).get_queryset().prefetch_related(
+            'tickets'
+        )
+
+        projects = []
+        for project in qs:
+            inserted = False
+            for ticket in project.tickets.all():
+                if self.request.user in ticket.assignees.all():
+                    projects.insert(0, project)
+                    inserted = True
+                    break
+            if not inserted:
+                projects.append(project)
+
+        return projects
 
 
 project_list_view = ProjectListView.as_view()
