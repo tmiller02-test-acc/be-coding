@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="large-8 large-centered columns">
+    <h3 class="subheader">Delete Ticket {{ ticket }}</h3>
+    <p>Are you sure that you want to delete the ticket <b>{{ ticket }}</b> for project <b>{{ ticket.project }}</b>?</p>
+	{% with assignees=ticket.assignees.all.count %}
+        {% if assignees == 0 %}
+            <p>There are no people assigned to this ticket.</p>
+        {% elif assignees == 1 %}
+            <p>There is {{assignees }} person assigned to this ticket.</p>
+        {% else %}
+            <p>There are {{ assignees }} people assigned to this ticket.</p>
+        {% endif %}
+    {% endwith %}
+
+    <form action="" method="post" id="ticket-form">
+        {% csrf_token %}
+        <div class="button-holder">
+            <input type="submit" name="submit" value="Delete" class="submit button">
+            <a href="{% url 'project-detail' project_id=current_project.pk %}">Cancel</a>
+        </div>
+	</form>
+</div>
+{% endblock %}
