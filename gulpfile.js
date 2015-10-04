@@ -12,7 +12,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('copy-foundation-fonts', function () {
-	gulp.src(baseSrcDir + '/components/foundation-icon-fonts/foundation-icons.{ttf,woff,eof,svg}')
+	gulp.src(baseSrcDir + '/components/foundation-icon-fonts/foundation-icons.{ttf,woff,eot,svg}')
 		.pipe(gulp.dest(baseSrcDir + '/css'));
 });
 
@@ -22,7 +22,7 @@ gulp.task('concat-js', function() {
 	gulp.src([
 			baseSrcDir + '/components/fastclick/lib/fastclick.js',
 			baseSrcDir + '/components/jquery/dist/jquery.min.js',
-			baseSrcDir + '/components/foundation/js/foundation/foundation.min.js',
+			baseSrcDir + '/components/foundation/js/foundation.min.js',
 			baseSrcDir + '/components/chosen/chosen.jquery.min.js',
 			baseSrcDir + '/js/app.js'
 		])
@@ -33,8 +33,10 @@ gulp.task('concat-js', function() {
 
 gulp.task('copy-styles', function () {
 	gulp.src([
-		baseSrcDir + '/css/*.css',
+		baseSrcDir + '/css/*',
 		baseSrcDir + '/components/chosen/chosen.min.css',
+		baseSrcDir + '/components/chosen/chosen-sprite.png',
+		baseSrcDir + '/components/chosen/chosen-sprite@2x.png',
 	]).pipe(gulp.dest(baseDestDir + '/css/'));
 });
 
