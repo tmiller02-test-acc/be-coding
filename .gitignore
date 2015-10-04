@@ -4,3 +4,4 @@ tracker/static-dev/components/*
 .storage
 .coverage
 sitepackages/
+node_modules/
