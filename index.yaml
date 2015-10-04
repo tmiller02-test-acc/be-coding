@@ -27,6 +27,15 @@ indexes:
   - name: created
     direction: desc
 
+- kind: site_project
+  properties:
+  - name: modified
+    direction: desc
+  - name: created
+    direction: desc
+  - name: created_by_id
+  - name: title
+
 - kind: site_ticket
   properties:
   - name: assignees_ids

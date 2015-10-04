@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from django.views.generic.edit import DeleteView
-
+from djangae.contrib.consistency import improve_queryset_consistency
 from .forms import ProjectForm, TicketForm
 from .models import Project, Ticket
 
@@ -54,6 +54,8 @@ class ProjectListView(ListView):
         qs = super(ProjectListView, self).get_queryset().prefetch_related(
             'tickets'
         )
+
+        qs = improve_queryset_consistency(qs)
 
         projects = []
         for project in qs:
@@ -117,7 +119,7 @@ class ProjectView(ProjectContextMixin, TemplateView):
         project = self.get_project()
         context.update({
             "project": project,
-            "tickets": project.tickets.all()
+            "tickets": improve_queryset_consistency(project.tickets.all())
         })
         return context
 
