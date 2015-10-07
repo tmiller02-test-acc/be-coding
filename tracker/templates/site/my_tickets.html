@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
-		{% for ticket in tickets %}
-			<li>
-				<div class="panel">
-					<h5><a href="{% url "ticket-update" project_id=ticket.project.id ticket_id=ticket.pk %}">{{ ticket.project.title|truncatechars:50 }}: {{ ticket.title|truncatechars:100 }}</a></h5>
-					<hr>
-					<p>{{ ticket.description|truncatechars:200 }}</p>
-					<small>Last updated: {{ ticket.modified }}</small>
-				</div>
-			</li>
-		{% empty %}
-			<li>
-				<div class="panel callout">
-					<h4>You are not assigned to any tickets</h4>
-					<p>
-						Either select a project from the top bar or <a href="{% url "project-create" %}">create a new project</a>.
-					</p>
-				</div>
-			</li>
-		{% endfor %}
-	</ul>
+	{% if tickets %}
+		<ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+			{% for ticket in tickets %}
+				<li>
+					<div class="panel">
+						<h5><a href="{% url "ticket-update" project_id=ticket.project.id ticket_id=ticket.pk %}">{{ ticket.project.title|truncatechars:50 }}: {{ ticket.title|truncatechars:100 }}</a></h5>
+						<hr>
+						<p>{{ ticket.description|truncatechars:200 }}</p>
+						<small>Last updated: {{ ticket.modified }}</small>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<div class="panel callout">
+			<h4>You are not assigned to any tickets</h4>
+			<p>
+				Either select a project from the top bar or <a href="{% url "project-create" %}">create a new project</a>.
+			</p>
+		</div>
+	{% endif %}
 {% endblock %}
